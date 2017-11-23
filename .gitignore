@@ -1,0 +1,12 @@
+# Mac OSX
+.DS_Store
+
+# npm
+node_modules/
+
+# .env
+src/server/.env
+
+## API keys ##
+src/config/youtube.js
+compiled/config/youtube.js
