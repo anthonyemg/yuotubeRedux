@@ -2,6 +2,8 @@ import { combineReducers } from 'redux';
 
 const videos = (state = null, action) => {
   switch (action.type) {
+    case 'UPDATE_VIDEOS':
+      return action.payload;
     default:
       return state;
   }
@@ -9,6 +11,8 @@ const videos = (state = null, action) => {
 
 const resultsNumber = (state = 0, action) => {
   switch (action.type) {
+    case 'UPDATE_RESULTS_NUMBER':
+      return action.payload;
     default:
       return state;
   }
@@ -16,18 +20,24 @@ const resultsNumber = (state = 0, action) => {
 
 const selectedVideo = (state = null, action) => {
   switch (action.type) {
+    case 'UPDATE_SELECTED_VIDEO':
+      return action.payload;
     default:
       return state;
   }
 };
 const selectedVideoId = (state = null, action) => {
   switch (action.type) {
+    case 'UPDATE_SELECTED_VIDEO_ID':
+      return action.payload;
     default:
       return state;
   }
 };
 const selectedVideoComments = (state = null, action) => {
   switch (action.type) {
+    case 'UPDATE_SELECTED_VIDEO_COMMENTS':
+      return action.payload;
     default:
       return state;
   }
@@ -35,13 +45,17 @@ const selectedVideoComments = (state = null, action) => {
 
 const upNextVideo = (state = null, action) => {
   switch (action.type) {
+    case 'UPDATE_UP_NEXT_VIDEO':
+      return action.payload;
     default:
       return state;
   }
 };
 
-const upNextVideoList = (state = null, action) => {
+const upNextVideos = (state = null, action) => {
   switch (action.type) {
+    case 'UPDATE_UP_NEXT_VIDEOS':
+      return action.payload;
     default:
       return state;
   }
@@ -49,6 +63,8 @@ const upNextVideoList = (state = null, action) => {
 
 const trendingVideos = (state = null, action) => {
   switch (action.type) {
+    case 'UPDATE_TRENDING_VIDEOS':
+      return action.payload;
     default:
       return state;
   }
@@ -56,6 +72,8 @@ const trendingVideos = (state = null, action) => {
 
 const popularMusicVideos = (state = null, action) => {
   switch (action.type) {
+    case 'UPDATE_POPULAR_VIDEOS':
+      return action.payload;
     default:
       return state;
   }
@@ -63,6 +81,8 @@ const popularMusicVideos = (state = null, action) => {
 
 const movieTrailers = (state = null, action) => {
   switch (action.type) {
+    case 'UPDATE_MOVIE_TRAILERS':
+      return action.payload;
     default:
       return state;
   }
@@ -70,6 +90,8 @@ const movieTrailers = (state = null, action) => {
 
 const lateNight = (state = null, action) => {
   switch (action.type) {
+    case 'UPDATE_LATE_NIGHT':
+      return action.payload;
     default:
       return state;
   }
@@ -82,7 +104,7 @@ const rootReducer = combineReducers({
   selectedVideoId,
   selectedVideoComments,
   upNextVideo,
-  upNextVideoList,
+  upNextVideos,
   trendingVideos,
   popularMusicVideos,
   movieTrailers,

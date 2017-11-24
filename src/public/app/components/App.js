@@ -1,6 +1,18 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import {} from '../actions';
+import {
+  updateVideos,
+  updateResultsNumber,
+  updateSelectedVideo,
+  updateSelectedVideoId,
+  updateSelectedVideoComments,
+  updateUpNextVideo,
+  updateUpNextVideos,
+  updateTrendingVideos,
+  updatePopularVideos,
+  updateMovieTrailers,
+  updateLateNight
+} from '../actions';
 
 import TopMenu from './TopMenu';
 import TopMenuMobile from './TopMenuMobile';
@@ -12,19 +24,6 @@ import MobileLanding from './MobileLanding';
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      videos: null,
-      resultsNumber: 0,
-      selectedVideo: null,
-      selectedVideoId: null,
-      selectedVideoComments: null,
-      upNextVideo: null,
-      upNextVideoList: null,
-      trendingVideos: null,
-      popularMusicVideos: null,
-      movieTrailers: null,
-      lateNight: null
-    };
     this.handleVideoListUpdate = this.handleVideoListUpdate.bind(this);
     this.numberWithCommas = this.numberWithCommas.bind(this);
     this.handleSelectVideo = this.handleSelectVideo.bind(this);
@@ -44,18 +43,11 @@ class App extends React.Component {
     this.fetchMovieTrailers();
     this.fetchLateNight();
   }
-  componentDidMount() {
-    this.setState({
-      landingVideoList: true
-    });
-  }
   handleVideoListUpdate(data) {
-    this.setState({
-      videos: data.items,
-      resultsNumber: this.numberWithCommas(data.pageInfo.totalResults),
-      selectedVideo: null,
-      selectedVideoComments: null
-    });
+    this.props.updateVideos(data.items);
+    this.props.updateResultsNumber(this.numberWithCommas(data.pageInfo.totalResults));
+    this.props.updateSelectedVideo(null);
+    this.props.updateSelectedVideoComments(null);
   }
   numberWithCommas(x) {
     x = x.toString();
@@ -72,10 +64,8 @@ class App extends React.Component {
     } else if (video.kind === 'youtube#searchResult') {
       id = video.id.videoId;
     }
-    this.setState({
-      selectedVideo: video,
-      selectedVideoId: id
-    });
+    this.props.updateSelectedVideo(video);
+    this.props.updateSelectedVideoId(id);
     this.handleFetchComments(id);
     this.fetchRelatedVideos(id);
   }
@@ -87,9 +77,7 @@ class App extends React.Component {
     })
       .then(res => res.json())
       .then(data => {
-        this.setState({
-          selectedVideoComments: data.items
-        });
+        this.props.updateSelectedVideoComments(data.items);
       })
       .catch(err => console.log(err));
   }
@@ -105,13 +93,11 @@ class App extends React.Component {
       })
       .catch(err => console.log(err));
   }
-  handleUpNextVideos(list) {
-    let random = Math.floor(list.length * Math.random());
-    let upNextVideo = list.splice(random, 1);
-    this.setState({
-      upNextVideo: upNextVideo[0],
-      upNextVideoList: list
-    });
+  handleUpNextVideos(videos) {
+    let random = Math.floor(videos.length * Math.random());
+    let upNextVideo = videos.splice(random, 1);
+    this.props.updateUpNextVideo(upNextVideo[0]);
+    this.props.updateUpNextVideos(videos);
   }
   fetchTrending() {
     fetch('/trending', {
@@ -119,9 +105,7 @@ class App extends React.Component {
     })
       .then(res => res.json())
       .then(data => {
-        this.setState({
-          trendingVideos: data.items
-        });
+        this.props.updateTrendingVideos(data.items);
       })
       .catch(err => console.log(err));
   }
@@ -129,9 +113,7 @@ class App extends React.Component {
     fetch('/popular/musicvideos', { method: 'GET' })
       .then(res => res.json())
       .then(data => {
-        this.setState({
-          popularMusicVideos: data.items
-        });
+        this.props.updatePopularVideos(data.items);
       })
       .catch(err => console.log(err));
   }
@@ -139,9 +121,7 @@ class App extends React.Component {
     fetch('/movie/trailers', { method: 'GET' })
       .then(res => res.json())
       .then(data => {
-        this.setState({
-          movieTrailers: data.items
-        });
+        this.props.updateMovieTrailers(data.items);
       })
       .catch(err => console.log(err));
   }
@@ -149,18 +129,14 @@ class App extends React.Component {
     fetch('/latenight', { method: 'GET' })
       .then(res => res.json())
       .then(data => {
-        this.setState({
-          lateNight: data.items
-        });
+        this.props.updateLateNight(data.items);
       })
       .catch(err => console.log(err));
   }
   handleYuoTubePress() {
-    this.setState({
-      selectedVideo: null,
-      selectedVideoId: null,
-      videos: null
-    });
+    this.props.updateVideos(null);
+    this.props.updateSelectedVideo(null);
+    this.props.updateSelectedVideoId(null);
   }
   convertDate(date) {
     let videoDate = new Date(date);
@@ -194,66 +170,66 @@ class App extends React.Component {
         <TopMenuMobile
           handleVideoListUpdate={this.handleVideoListUpdate}
           handleYuoTubePress={this.handleYuoTubePress}
-          selectedVideo={this.state.selectedVideo}
+          selectedVideo={this.props.selectedVideo}
         />
-        {this.state.trendingVideos &&
-          this.state.popularMusicVideos &&
-          this.state.movieTrailers &&
-          this.state.lateNight &&
-          !this.state.videos &&
-          !this.state.selectedVideo && (
+        {this.props.trendingVideos &&
+          this.props.popularMusicVideos &&
+          this.props.movieTrailers &&
+          this.props.lateNight &&
+          !this.props.videos &&
+          !this.props.selectedVideo && (
             <div className="landingVideoList-wrapper desktopLanding">
               <LandingVideoList
-                videos={this.state.trendingVideos}
+                videos={this.props.trendingVideos}
                 title="Trending"
                 handleSelectVideo={this.handleSelectVideo}
                 convertDate={this.convertDate}
               />
               <LandingVideoList
-                videos={this.state.popularMusicVideos}
+                videos={this.props.popularMusicVideos}
                 title="Popular Music Videos by Music"
                 handleSelectVideo={this.handleSelectVideo}
                 convertDate={this.convertDate}
               />
               <LandingVideoList
-                videos={this.state.movieTrailers}
+                videos={this.props.movieTrailers}
                 title="Trailers by Movies - Topic"
                 handleSelectVideo={this.handleSelectVideo}
                 convertDate={this.convertDate}
               />
               <LandingVideoList
-                videos={this.state.lateNight}
+                videos={this.props.lateNight}
                 title="Catch Up on Late Night by Popular on YouTube"
                 handleSelectVideo={this.handleSelectVideo}
                 convertDate={this.convertDate}
               />
             </div>
           )}
-        {this.state.trendingVideos &&
-          !this.state.selectedVideo &&
-          !this.state.videos && (
+        {this.props.trendingVideos &&
+          !this.props.selectedVideo &&
+          !this.props.videos && (
             <MobileLanding
-              videos={this.state.trendingVideos}
+              videos={this.props.trendingVideos}
               handleSelectVideo={this.handleSelectVideo}
               convertDate={this.convertDate}
             />
           )}
-        {this.state.videos &&
-          !this.state.selectedVideo && (
+        {this.props.videos &&
+          !this.props.selectedVideo && (
             <VideoList
-              videos={this.state.videos}
-              resultsNumber={this.state.resultsNumber}
+              videos={this.props.videos}
+              resultsNumber={this.props.resultsNumber}
               handleSelectVideo={this.handleSelectVideo}
             />
           )}
-        {this.state.selectedVideo && (
+        {this.props.selectedVideo && (
           <VideoPlayer
-            selectedVideo={this.state.selectedVideo}
-            selectedVideoId={this.state.selectedVideoId}
+            selectedVideo={this.props.selectedVideo}
+            selectedVideoId={this.props.selectedVideoId}
             handleSelectVideo={this.handleSelectVideo}
-            selectedVideoComments={this.state.selectedVideoComments}
-            upNextVideo={this.state.upNextVideo}
-            upNextVideoList={this.state.upNextVideoList}
+            selectedVideoComments={this.props.selectedVideoComments}
+            upNextVideo={this.props.upNextVideo}
+            upNextVideos={this.props.upNextVideos}
             handleSelectVideo={this.handleSelectVideo}
           />
         )}
@@ -263,8 +239,30 @@ class App extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  test: state.test
+  videos: state.videos,
+  resultsNumber: state.resultsNumber,
+  selectedVideo: state.selectedVideo,
+  selectedVideoId: state.selectedVideoId,
+  selectedVideoComments: state.selectedVideoComments,
+  upNextVideo: state.upNextVideo,
+  upNextVideos: state.upNextVideos,
+  trendingVideos: state.trendingVideos,
+  popularMusicVideos: state.popularMusicVideos,
+  movieTrailers: state.movieTrailers,
+  lateNight: state.lateNight
 });
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = dispatch => ({
+  updateVideos: videos => dispatch(updateVideos(videos)),
+  updateResultsNumber: number => dispatch(updateResultsNumber(number)),
+  updateSelectedVideo: video => dispatch(updateSelectedVideo(video)),
+  updateSelectedVideoId: id => dispatch(updateSelectedVideoId(id)),
+  updateSelectedVideoComments: comments => dispatch(updateSelectedVideoComments(comments)),
+  updateUpNextVideo: video => dispatch(updateUpNextVideo(video)),
+  updateUpNextVideos: videos => dispatch(updateUpNextVideos(videos)),
+  updateTrendingVideos: videos => dispatch(updateTrendingVideos(videos)),
+  updatePopularVideos: videos => dispatch(updatePopularVideos(videos)),
+  updateMovieTrailers: videos => dispatch(updateMovieTrailers(videos)),
+  updateLateNight: videos => dispatch(updateLateNight(videos))
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
