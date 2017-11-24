@@ -1,18 +1,23 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
+const propTypes = {
+  videos: PropTypes.array.isRequired,
+  resultsNumber: PropTypes.string.isRequired,
+  handleSelectVideo: PropTypes.func.isRequired
+};
 
 class VideoList extends React.Component {
   constructor(props) {
-    super(props);
+    super();
   }
-
   componentDidMount() {
     document.body.scrollTop = document.documentElement.scrollTop = 0;
   }
-
   componentWillUpdate() {
     document.body.scrollTop = document.documentElement.scrollTop = 0;
+    console.log('type of resulstNumber', typeof this.props.resultsNumber);
   }
-
   render() {
     if (this.props.videos) {
       return (
@@ -27,10 +32,6 @@ class VideoList extends React.Component {
               onClick={() => this.props.handleSelectVideo(video)}
             >
               <div>
-                {/* <div
-                  className='VideoList-videoImage'
-                  style={{background: `url(${video.snippet.thumbnails.default.url})`}}>
-                </div> */}
                 <img src={video.snippet.thumbnails.medium.url} />
               </div>
               <div className="VideoList-videoDescription">
@@ -53,9 +54,11 @@ class VideoList extends React.Component {
         </div>
       );
     } else {
-      return <div />;
+      return null;
     }
   }
 }
+
+VideoList.propTypes = propTypes;
 
 export default VideoList;

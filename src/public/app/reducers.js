@@ -9,7 +9,7 @@ const videos = (state = null, action) => {
   }
 };
 
-const resultsNumber = (state = 0, action) => {
+const resultsNumber = (state = '0', action) => {
   switch (action.type) {
     case 'UPDATE_RESULTS_NUMBER':
       return action.payload;
