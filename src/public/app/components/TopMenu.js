@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link, withRouter } from 'react-router-dom';
 
 const propTypes = {
   handleVideoListUpdate: PropTypes.func.isRequired,
@@ -8,15 +9,15 @@ const propTypes = {
 
 class TopMenu extends React.Component {
   constructor(props) {
-    super(props);
+    super();
     this.state = {
       searchQuery: ''
     };
     this.searchYouTube = this.searchYouTube.bind(this);
     this.handleSearchChange = this.handleSearchChange.bind(this);
     this.handleSearchEnterKeyPress = this.handleSearchEnterKeyPress.bind(this);
+    this.handleNextPath = this.handleNextPath.bind(this);
   }
-
   searchYouTube() {
     if (this.state.searchQuery.length > 0) {
       fetch('/videos', {
@@ -31,19 +32,21 @@ class TopMenu extends React.Component {
         .catch(err => console.log(err));
     }
   }
-
   handleSearchChange(e) {
     this.setState({
       searchQuery: e.target.value
     });
   }
-
   handleSearchEnterKeyPress(e) {
     if (e.charCode == 13) {
       this.searchYouTube();
     }
   }
-
+  handleNextPath(path) {
+    if (this.props.history !== path) {
+      this.props.history.push(path);
+    }
+  }
   render() {
     return (
       <div className="TopMenu">
@@ -52,7 +55,7 @@ class TopMenu extends React.Component {
             <i className="fa fa-bars fa-lg" />
           </div>
           <i className="fa fa-youtube-play fa-med topMenu-youtubeLogo" />
-          <span onClick={() => this.props.handleYuoTubePress()}>YuoTube</span>
+          <span onClick={() => this.handleNextPath('/')}>YuoTube</span>
         </div>
 
         <div className="topMenu-searchBar">
@@ -62,9 +65,13 @@ class TopMenu extends React.Component {
             onChange={this.handleSearchChange}
             onKeyPress={this.handleSearchEnterKeyPress}
           />
-          <div className="topMenu-searchBarSearchButton" onClick={this.searchYouTube}>
+          <Link
+            to="/results"
+            className="topMenu-searchBarSearchButton"
+            onClick={this.searchYouTube}
+          >
             <i className="fa fa-search fa-1x" />
-          </div>
+          </Link>
         </div>
 
         <div className="topMenu-navigationButton">
@@ -80,4 +87,4 @@ class TopMenu extends React.Component {
 
 TopMenu.propTypes = propTypes;
 
-export default TopMenu;
+export default withRouter(TopMenu);

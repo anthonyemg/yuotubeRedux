@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 
 const propTypes = {
   handleVideoListUpdate: PropTypes.func.isRequired,
-  handleYuoTubePress: PropTypes.func.isRequired,
+  // handleYuoTubePress: PropTypes.func.isRequired,
   selectedVideo: PropTypes.object
 };
 
@@ -19,8 +20,8 @@ class TopMenuMobile extends React.Component {
     this.handleSearchEnterKeyPress = this.handleSearchEnterKeyPress.bind(this);
     this.handleShowSearchBar = this.handleShowSearchBar.bind(this);
     this.handleHideSearchBar = this.handleHideSearchBar.bind(this);
+    this.handleNextPath = this.handleNextPath.bind(this);
   }
-
   searchYouTube() {
     if (this.state.searchQuery.length > 0) {
       fetch('/videos', {
@@ -38,31 +39,31 @@ class TopMenuMobile extends React.Component {
         .catch(err => console.log(err));
     }
   }
-
   handleSearchChange(e) {
     this.setState({
       searchQuery: e.target.value
     });
   }
-
   handleSearchEnterKeyPress(e) {
     if (e.charCode == 13) {
       this.searchYouTube();
     }
   }
-
   handleShowSearchBar() {
     this.setState({
       showSearchBar: true
     });
   }
-
   handleHideSearchBar() {
     this.setState({
       showSearchBar: false
     });
   }
-
+  handleNextPath(path) {
+    if (this.props.history !== path) {
+      this.props.history.push(path);
+    }
+  }
   render() {
     return (
       <div className="TopMenuMobile">
@@ -73,7 +74,8 @@ class TopMenuMobile extends React.Component {
           <div>
             <i
               className="fa fa-youtube-play fa-2x"
-              onClick={() => this.props.handleYuoTubePress()}
+              // onClick={() => this.props.handleYuoTubePress()}
+              onClick={() => this.handleNextPath('/')}
               style={{ marginLeft: 12, marginRight: 12 }}
             />
             {!this.state.showSearchBar && !this.state.searchQuery && <span>Home</span>}
@@ -123,4 +125,4 @@ class TopMenuMobile extends React.Component {
 
 TopMenuMobile.propTypes = propTypes;
 
-export default TopMenuMobile;
+export default withRouter(TopMenuMobile);

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const propTypes = {
-  videos: PropTypes.array.isRequired,
+  videos: PropTypes.array,
   resultsNumber: PropTypes.string.isRequired,
   handleSelectVideo: PropTypes.func.isRequired
 };
@@ -16,7 +16,6 @@ class VideoList extends React.Component {
   }
   componentWillUpdate() {
     document.body.scrollTop = document.documentElement.scrollTop = 0;
-    console.log('type of resulstNumber', typeof this.props.resultsNumber);
   }
   render() {
     if (this.props.videos) {
@@ -38,13 +37,11 @@ class VideoList extends React.Component {
                 <div className="VideoList-videoDescriptionTitle">
                   <span>{video.snippet.title}</span>
                 </div>
-
                 <div className="VideoList-videoDescriptionChannelTitle">
                   <span>{video.snippet.channelTitle}</span>
                   <span className="desktop">•</span>
                   <span className="desktop">{video.snippet.publishedAt}</span>
                 </div>
-
                 <span className="VideoList-videoDescriptionDescription">
                   {video.snippet.description}
                 </span>
@@ -54,7 +51,7 @@ class VideoList extends React.Component {
         </div>
       );
     } else {
-      return null;
+      return <span>Please search above for videos</span>;
     }
   }
 }
