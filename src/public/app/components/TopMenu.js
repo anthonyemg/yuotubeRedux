@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
 
 const propTypes = {
-  handleVideoListUpdate: PropTypes.func.isRequired,
-  handleYuoTubePress: PropTypes.func.isRequired
+  handleVideoListUpdate: PropTypes.func.isRequired
+  // handleYuoTubePress: PropTypes.func.isRequired
 };
 
 class TopMenu extends React.Component {
@@ -43,7 +43,7 @@ class TopMenu extends React.Component {
     }
   }
   handleNextPath(path) {
-    if (this.props.history !== path) {
+    if (this.props.history.location.pathname !== path) {
       this.props.history.push(path);
     }
   }

@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 import TopMenu from './TopMenu';
 import TopMenuMobile from './TopMenuMobile';
@@ -10,6 +11,12 @@ class Landing extends React.Component {
   constructor(props) {
     super();
     this.convertDate = this.convertDate.bind(this);
+    this.handleNextPath = this.handleNextPath.bind(this);
+  }
+  handleNextPath(path) {
+    if (this.props.history.location.pathname !== path) {
+      this.props.history.push(path);
+    }
   }
   convertDate(date) {
     let videoDate = new Date(date);
@@ -47,24 +54,28 @@ class Landing extends React.Component {
                 videos={this.props.trendingVideos}
                 title="Trending"
                 handleSelectVideo={this.props.handleSelectVideo}
+                handleNextPath={this.handleNextPath}
                 convertDate={this.convertDate}
               />
               <LandingVideoList
                 videos={this.props.popularMusicVideos}
                 title="Popular Music Videos by Music"
                 handleSelectVideo={this.props.handleSelectVideo}
+                handleNextPath={this.handleNextPath}
                 convertDate={this.convertDate}
               />
               <LandingVideoList
                 videos={this.props.movieTrailers}
                 title="Trailers by Movies - Topic"
                 handleSelectVideo={this.props.handleSelectVideo}
+                handleNextPath={this.handleNextPath}
                 convertDate={this.convertDate}
               />
               <LandingVideoList
                 videos={this.props.lateNight}
                 title="Catch Up on Late Night by Popular on YouTube"
                 handleSelectVideo={this.props.handleSelectVideo}
+                handleNextPath={this.handleNextPath}
                 convertDate={this.convertDate}
               />
             </div>
@@ -91,4 +102,4 @@ const mapStateToProps = state => ({
   lateNight: state.lateNight
 });
 const mapDispatchToProps = dispatch => ({});
-export default connect(mapStateToProps, mapDispatchToProps)(Landing);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Landing));

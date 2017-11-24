@@ -13,7 +13,11 @@ import {
   updateMovieTrailers,
   updateLateNight
 } from '../actions';
-import { HashRouter, Route } from 'react-router-dom';
+import { Router, HashRouter, Route, hashHistory } from 'react-router-dom';
+
+import createBrowserHistory from 'history/createBrowserHistory';
+
+const customHistory = createBrowserHistory();
 
 import Landing from './Landing';
 
@@ -36,7 +40,7 @@ class App extends React.Component {
     this.fetchPopularMusicVideos = this.fetchPopularMusicVideos.bind(this);
     this.fetchMovieTrailers = this.fetchMovieTrailers.bind(this);
     this.fetchLateNight = this.fetchLateNight.bind(this);
-    this.handleYuoTubePress = this.handleYuoTubePress.bind(this);
+    // this.handleYuoTubePress = this.handleYuoTubePress.bind(this);
     this.handleUpNextVideos = this.handleUpNextVideos.bind(this);
   }
   componentWillMount() {
@@ -135,20 +139,16 @@ class App extends React.Component {
       })
       .catch(err => console.log(err));
   }
-  handleYuoTubePress() {
-    this.props.updateVideos(null);
-    this.props.updateSelectedVideo(null);
-    this.props.updateSelectedVideoId(null);
-  }
-
+  // handleYuoTubePress() {
+  //   this.props.updateVideos(null);
+  //   this.props.updateSelectedVideo(null);
+  //   this.props.updateSelectedVideoId(null);
+  // }
   render() {
     return (
-      <HashRouter>
+      <Router history={customHistory}>
         <div className="App">
-          <TopMenu
-            handleVideoListUpdate={this.handleVideoListUpdate}
-            handleYuoTubePress={this.handleYuoTubePress}
-          />
+          <TopMenu handleVideoListUpdate={this.handleVideoListUpdate} />
           <TopMenuMobile
             handleVideoListUpdate={this.handleVideoListUpdate}
             handleYuoTubePress={this.handleYuoTubePress}
@@ -170,8 +170,23 @@ class App extends React.Component {
               />
             )}
           />
+          <Route
+            exact
+            path="/player"
+            component={() => (
+              <VideoPlayer
+                selectedVideo={this.props.selectedVideo}
+                selectedVideoId={this.props.selectedVideoId}
+                handleSelectVideo={this.handleSelectVideo}
+                selectedVideoComments={this.props.selectedVideoComments}
+                upNextVideo={this.props.upNextVideo}
+                upNextVideos={this.props.upNextVideos}
+                handleSelectVideo={this.handleSelectVideo}
+              />
+            )}
+          />
         </div>
-      </HashRouter>
+      </Router>
 
       // <div className="App">
       //   <TopMenu

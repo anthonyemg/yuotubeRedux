@@ -21,7 +21,10 @@ class LandingVideoList extends React.Component {
             <div
               className="landingVideoList-video"
               key={idx}
-              onClick={() => this.props.handleSelectVideo(video)}
+              onClick={() => {
+                this.props.handleSelectVideo(video);
+                this.props.handleNextPath('/player');
+              }}
             >
               <img src={video.snippet.thumbnails.medium.url} />
               <div className="landingVideoList-description">

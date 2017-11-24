@@ -60,7 +60,7 @@ class TopMenuMobile extends React.Component {
     });
   }
   handleNextPath(path) {
-    if (this.props.history !== path) {
+    if (this.props.history.location.pathname !== path) {
       this.props.history.push(path);
     }
   }
