@@ -1,11 +1,22 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import YouTube from 'react-youtube';
 import Comments from './Comments';
 import UpNextList from './UpNextList';
 
+const propTypes = {
+  selectedVideo: PropTypes.object.isRequired,
+  selectedVideoId: PropTypes.string.isRequired,
+  handleSelectVideo: PropTypes.func.isRequired,
+  selectedVideoComments: PropTypes.array,
+  upNextVideo: PropTypes.object,
+  upNextVideos: PropTypes.array,
+  handleSelectVideo: PropTypes.func.isRequired
+};
+
 class VideoPlayer extends React.Component {
   constructor(props) {
-    super(props);
+    super();
     this.state = {
       autoplay: true
     };
@@ -88,5 +99,7 @@ class VideoPlayer extends React.Component {
     );
   }
 }
+
+VideoPlayer.propTypes = propTypes;
 
 export default VideoPlayer;
