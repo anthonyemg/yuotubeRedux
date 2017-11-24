@@ -1,8 +1,18 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
+const propTypes = {
+  upNextVideo: PropTypes.object.isRequired,
+  upNextVideos: PropTypes.array.isRequired,
+  handleSelectVideo: PropTypes.func.isRequired,
+  handleAutoplayCheck: PropTypes.func.isRequired,
+  autoplay: PropTypes.bool.isRequired,
+  type: PropTypes.string.isRequired
+};
 
 class UpNextList extends React.Component {
   constructor(props) {
-    super(props);
+    super();
   }
   render() {
     return (
@@ -55,5 +65,7 @@ class UpNextList extends React.Component {
     );
   }
 }
+
+UpNextList.propTypes = propTypes;
 
 export default UpNextList;
