@@ -2,6 +2,9 @@ export function updateVideos(videos) {
   return { type: 'UPDATE_VIDEOS', payload: videos };
 }
 
+export function updateSearchQuery(searchQuery) {
+  return { type: 'UPDATE_SEARCH_QUERY', payload: searchQuery };
+}
 export function updateResultsNumber(number) {
   return { type: 'UPDATE_RESULTS_NUMBER', payload: number };
 }

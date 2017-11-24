@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { updateSearchQuery } from '../actions';
 
 const propTypes = {
   handleVideoListUpdate: PropTypes.func.isRequired,
@@ -12,7 +14,7 @@ class TopMenuMobile extends React.Component {
   constructor(props) {
     super();
     this.state = {
-      searchQuery: '',
+      // searchQuery: '',
       showSearchBar: false
     };
     this.searchYouTube = this.searchYouTube.bind(this);
@@ -23,7 +25,7 @@ class TopMenuMobile extends React.Component {
     this.handleNextPath = this.handleNextPath.bind(this);
   }
   searchYouTube() {
-    if (this.state.searchQuery.length > 0) {
+    if (this.props.searchQuery.length > 0) {
       fetch('/videos', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -40,9 +42,10 @@ class TopMenuMobile extends React.Component {
     }
   }
   handleSearchChange(e) {
-    this.setState({
-      searchQuery: e.target.value
-    });
+    // this.setState({
+    //   searchQuery: e.target.value
+    // });
+    this.props.updateSearchQuery(e.target.value);
   }
   handleSearchEnterKeyPress(e) {
     if (e.charCode == 13) {
@@ -79,8 +82,8 @@ class TopMenuMobile extends React.Component {
               onClick={() => this.handleNextPath('/')}
               style={{ marginLeft: 12, marginRight: 12 }}
             />
-            {!this.state.showSearchBar && !this.state.searchQuery && <span>Home</span>}
-            {!this.state.showSearchBar && <span>{this.state.searchQuery}</span>}
+            {!this.state.showSearchBar && !this.props.searchQuery && <span>Home</span>}
+            {!this.state.showSearchBar && <span>{this.props.searchQuery}</span>}
           </div>
 
           {this.state.showSearchBar && (
@@ -126,4 +129,11 @@ class TopMenuMobile extends React.Component {
 
 TopMenuMobile.propTypes = propTypes;
 
-export default withRouter(TopMenuMobile);
+const mapStateToProps = state => ({
+  searchQuery: state.searchQuery
+});
+const mapDispatchToProps = dispatch => ({
+  updateSearchQuery: searchQuery => dispatch(updateSearchQuery(searchQuery))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(TopMenuMobile));

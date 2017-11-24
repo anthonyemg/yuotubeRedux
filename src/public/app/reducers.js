@@ -9,6 +9,15 @@ const videos = (state = null, action) => {
   }
 };
 
+const searchQuery = (state = '', action) => {
+  switch (action.type) {
+    case 'UPDATE_SEARCH_QUERY':
+      return action.payload;
+    default:
+      return state;
+  }
+};
+
 const resultsNumber = (state = '0', action) => {
   switch (action.type) {
     case 'UPDATE_RESULTS_NUMBER':
@@ -99,6 +108,7 @@ const lateNight = (state = null, action) => {
 
 const rootReducer = combineReducers({
   videos,
+  searchQuery,
   resultsNumber,
   selectedVideo,
   selectedVideoId,

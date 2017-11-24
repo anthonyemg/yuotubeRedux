@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {
   updateVideos,
+  updateSearchQuery,
   updateResultsNumber,
   updateSelectedVideo,
   updateSelectedVideoId,
@@ -140,9 +141,10 @@ class App extends React.Component {
       .catch(err => console.log(err));
   }
   handleYuoTubePress() {
-    this.props.updateVideos(null);
-    this.props.updateSelectedVideo(null);
-    this.props.updateSelectedVideoId(null);
+    this.props.updateSearchQuery('');
+    // this.props.updateVideos(null);
+    // this.props.updateSelectedVideo(null);
+    // this.props.updateSelectedVideoId(null);
   }
   render() {
     return (
@@ -282,6 +284,7 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => ({
   updateVideos: videos => dispatch(updateVideos(videos)),
+  updateSearchQuery: searchQuery => dispatch(updateSearchQuery(searchQuery)),
   updateResultsNumber: number => dispatch(updateResultsNumber(number)),
   updateSelectedVideo: video => dispatch(updateSelectedVideo(video)),
   updateSelectedVideoId: id => dispatch(updateSelectedVideoId(id)),
