@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
@@ -6,6 +7,10 @@ import TopMenu from './TopMenu';
 import TopMenuMobile from './TopMenuMobile';
 import LandingVideoList from './LandingVideoList';
 import MobileLanding from './MobileLanding';
+
+const propTypes = {
+  handleSelectVideo: PropTypes.func.isRequired
+};
 
 class Landing extends React.Component {
   constructor(props) {
@@ -95,11 +100,13 @@ class Landing extends React.Component {
   }
 }
 
+Landing.propTypes = propTypes;
+
 const mapStateToProps = state => ({
   trendingVideos: state.trendingVideos,
   popularMusicVideos: state.popularMusicVideos,
   movieTrailers: state.movieTrailers,
   lateNight: state.lateNight
 });
-const mapDispatchToProps = dispatch => ({});
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Landing));
+
+export default connect(mapStateToProps)(withRouter(Landing));

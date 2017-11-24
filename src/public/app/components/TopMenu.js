@@ -1,7 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { updateSearchQuery } from '../actions';
-import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
 
 const propTypes = {
@@ -12,9 +12,7 @@ const propTypes = {
 class TopMenu extends React.Component {
   constructor(props) {
     super();
-    // this.state = {
-    //   searchQuery: ''
-    // };
+
     this.searchYouTube = this.searchYouTube.bind(this);
     this.handleSearchChange = this.handleSearchChange.bind(this);
     this.handleSearchEnterKeyPress = this.handleSearchEnterKeyPress.bind(this);
@@ -35,9 +33,6 @@ class TopMenu extends React.Component {
     }
   }
   handleSearchChange(e) {
-    // this.setState({
-    //   searchQuery: e.target.value
-    // });
     this.props.updateSearchQuery(e.target.value);
   }
   handleSearchEnterKeyPress(e) {
@@ -101,6 +96,7 @@ TopMenu.propTypes = propTypes;
 const mapStateToProps = state => ({
   searchQuery: state.searchQuery
 });
+
 const mapDispatchToProps = dispatch => ({
   updateSearchQuery: searchQuery => dispatch(updateSearchQuery(searchQuery))
 });

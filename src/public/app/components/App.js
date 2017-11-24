@@ -15,13 +15,10 @@ import {
   updateLateNight
 } from '../actions';
 import { Router, HashRouter, Route, hashHistory } from 'react-router-dom';
-
 import createBrowserHistory from 'history/createBrowserHistory';
-
 const customHistory = createBrowserHistory();
 
 import Landing from './Landing';
-
 import TopMenu from './TopMenu';
 import TopMenuMobile from './TopMenuMobile';
 import VideoList from './VideoList';
@@ -31,7 +28,7 @@ import MobileLanding from './MobileLanding';
 
 class App extends React.Component {
   constructor(props) {
-    super(props);
+    super();
     this.handleVideoListUpdate = this.handleVideoListUpdate.bind(this);
     this.numberWithCommas = this.numberWithCommas.bind(this);
     this.handleSelectVideo = this.handleSelectVideo.bind(this);
@@ -73,6 +70,7 @@ class App extends React.Component {
     }
     this.props.updateSelectedVideo(video);
     this.props.updateSelectedVideoId(id);
+    this.props.updateSearchQuery('');
     this.handleFetchComments(id);
     this.fetchRelatedVideos(id);
   }
@@ -142,9 +140,6 @@ class App extends React.Component {
   }
   handleYuoTubePress() {
     this.props.updateSearchQuery('');
-    // this.props.updateVideos(null);
-    // this.props.updateSelectedVideo(null);
-    // this.props.updateSelectedVideoId(null);
   }
   render() {
     return (
@@ -192,79 +187,6 @@ class App extends React.Component {
           />
         </div>
       </Router>
-
-      // <div className="App">
-      //   <TopMenu
-      //     handleVideoListUpdate={this.handleVideoListUpdate}
-      //     handleYuoTubePress={this.handleYuoTubePress}
-      //   />
-      //   <TopMenuMobile
-      //     handleVideoListUpdate={this.handleVideoListUpdate}
-      //     handleYuoTubePress={this.handleYuoTubePress}
-      //     selectedVideo={this.props.selectedVideo}
-      //   />
-      //   {this.props.trendingVideos &&
-      //     this.props.popularMusicVideos &&
-      //     this.props.movieTrailers &&
-      //     this.props.lateNight &&
-      //     !this.props.videos &&
-      //     !this.props.selectedVideo && (
-      //       <div className="landingVideoList-wrapper desktopLanding">
-      //         <LandingVideoList
-      //           videos={this.props.trendingVideos}
-      //           title="Trending"
-      //           handleSelectVideo={this.handleSelectVideo}
-      //           convertDate={this.convertDate}
-      //         />
-      //         <LandingVideoList
-      //           videos={this.props.popularMusicVideos}
-      //           title="Popular Music Videos by Music"
-      //           handleSelectVideo={this.handleSelectVideo}
-      //           convertDate={this.convertDate}
-      //         />
-      //         <LandingVideoList
-      //           videos={this.props.movieTrailers}
-      //           title="Trailers by Movies - Topic"
-      //           handleSelectVideo={this.handleSelectVideo}
-      //           convertDate={this.convertDate}
-      //         />
-      //         <LandingVideoList
-      //           videos={this.props.lateNight}
-      //           title="Catch Up on Late Night by Popular on YouTube"
-      //           handleSelectVideo={this.handleSelectVideo}
-      //           convertDate={this.convertDate}
-      //         />
-      //       </div>
-      //     )}
-      //   {this.props.trendingVideos &&
-      //     !this.props.selectedVideo &&
-      //     !this.props.videos && (
-      //       <MobileLanding
-      //         videos={this.props.trendingVideos}
-      //         handleSelectVideo={this.handleSelectVideo}
-      //         convertDate={this.convertDate}
-      //       />
-      //     )}
-      //   {this.props.videos &&
-      //     !this.props.selectedVideo && (
-      //       <VideoList
-      //         videos={this.props.videos}
-      //         resultsNumber={this.props.resultsNumber}
-      //         handleSelectVideo={this.handleSelectVideo}
-      //       />
-      //     )}
-      //   {this.props.selectedVideo && (
-      //     <VideoPlayer
-      //       selectedVideo={this.props.selectedVideo}
-      //       selectedVideoId={this.props.selectedVideoId}
-      //       handleSelectVideo={this.handleSelectVideo}
-      //       selectedVideoComments={this.props.selectedVideoComments}
-      //       upNextVideo={this.props.upNextVideo}
-      //       upNextVideos={this.props.upNextVideos}
-      //       handleSelectVideo={this.handleSelectVideo}
-      //     />
-      //   )}
-      // </div>
     );
   }
 }
@@ -277,11 +199,8 @@ const mapStateToProps = state => ({
   selectedVideoComments: state.selectedVideoComments,
   upNextVideo: state.upNextVideo,
   upNextVideos: state.upNextVideos
-  // trendingVideos: state.trendingVideos,
-  // popularMusicVideos: state.popularMusicVideos,
-  // movieTrailers: state.movieTrailers,
-  // lateNight: state.lateNight
 });
+
 const mapDispatchToProps = dispatch => ({
   updateVideos: videos => dispatch(updateVideos(videos)),
   updateSearchQuery: searchQuery => dispatch(updateSearchQuery(searchQuery)),

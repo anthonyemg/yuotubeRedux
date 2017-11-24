@@ -6,7 +6,7 @@ import { updateSearchQuery } from '../actions';
 
 const propTypes = {
   handleVideoListUpdate: PropTypes.func.isRequired,
-  // handleYuoTubePress: PropTypes.func.isRequired,
+  handleYuoTubePress: PropTypes.func.isRequired,
   selectedVideo: PropTypes.object
 };
 
@@ -14,7 +14,6 @@ class TopMenuMobile extends React.Component {
   constructor(props) {
     super();
     this.state = {
-      // searchQuery: '',
       showSearchBar: false
     };
     this.searchYouTube = this.searchYouTube.bind(this);
@@ -29,7 +28,7 @@ class TopMenuMobile extends React.Component {
       fetch('/videos', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ data: this.state.searchQuery })
+        body: JSON.stringify({ data: this.props.searchQuery })
       })
         .then(res => res.json())
         .then(data => {
@@ -42,9 +41,6 @@ class TopMenuMobile extends React.Component {
     }
   }
   handleSearchChange(e) {
-    // this.setState({
-    //   searchQuery: e.target.value
-    // });
     this.props.updateSearchQuery(e.target.value);
   }
   handleSearchEnterKeyPress(e) {
@@ -78,11 +74,12 @@ class TopMenuMobile extends React.Component {
           <div>
             <i
               className="fa fa-youtube-play fa-2x"
-              // onClick={() => this.props.handleYuoTubePress()}
+              onClick={() => this.props.handleYuoTubePress()}
               onClick={() => this.handleNextPath('/')}
-              style={{ marginLeft: 12, marginRight: 12 }}
+              style={{ marginLeft: 12, marginRight: 12, cursor: 'pointer' }}
             />
-            {!this.state.showSearchBar && !this.props.searchQuery && <span>Home</span>}
+            {!this.state.showSearchBar &&
+              !this.props.searchQuery && <span style={{ cursor: 'default' }}>Home</span>}
             {!this.state.showSearchBar && <span>{this.props.searchQuery}</span>}
           </div>
 
@@ -100,7 +97,7 @@ class TopMenuMobile extends React.Component {
               <div>
                 <i
                   className="fa fa-search fa-lg"
-                  style={{ marginLeft: 12, marginRight: 12 }}
+                  style={{ marginLeft: 12, marginRight: 12, cursor: 'pointer' }}
                   onClick={this.handleShowSearchBar}
                 />
                 <i className="fa fa-ellipsis-v fa-lg" style={{ marginLeft: 12, marginRight: 12 }} />
@@ -108,7 +105,7 @@ class TopMenuMobile extends React.Component {
             ) : (
               <i
                 className="fa fa-search fa-lg"
-                style={{ marginLeft: 12, marginRight: 12 }}
+                style={{ marginLeft: 12, marginRight: 12, cursor: 'pointer' }}
                 onClick={this.searchYouTube}
               />
             )}

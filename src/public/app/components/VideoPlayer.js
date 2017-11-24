@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
 import YouTube from 'react-youtube';
 import Comments from './Comments';
 import UpNextList from './UpNextList';
