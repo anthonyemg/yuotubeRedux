@@ -72,9 +72,7 @@ class VideoPlayer extends React.Component {
               type="mobile"
             />
           )}
-          {this.props.selectedVideoComments && (
-            <Comments selectedVideoComments={this.props.selectedVideoComments} />
-          )}
+          {this.props.selectedVideoComments && <Comments />}
         </div>
         {this.props.upNextVideos && (
           <UpNextList
