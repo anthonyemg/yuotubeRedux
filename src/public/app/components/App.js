@@ -40,7 +40,7 @@ class App extends React.Component {
     this.fetchPopularMusicVideos = this.fetchPopularMusicVideos.bind(this);
     this.fetchMovieTrailers = this.fetchMovieTrailers.bind(this);
     this.fetchLateNight = this.fetchLateNight.bind(this);
-    // this.handleYuoTubePress = this.handleYuoTubePress.bind(this);
+    this.handleYuoTubePress = this.handleYuoTubePress.bind(this);
     this.handleUpNextVideos = this.handleUpNextVideos.bind(this);
   }
   componentWillMount() {
@@ -139,16 +139,19 @@ class App extends React.Component {
       })
       .catch(err => console.log(err));
   }
-  // handleYuoTubePress() {
-  //   this.props.updateVideos(null);
-  //   this.props.updateSelectedVideo(null);
-  //   this.props.updateSelectedVideoId(null);
-  // }
+  handleYuoTubePress() {
+    this.props.updateVideos(null);
+    this.props.updateSelectedVideo(null);
+    this.props.updateSelectedVideoId(null);
+  }
   render() {
     return (
       <Router history={customHistory}>
         <div className="App">
-          <TopMenu handleVideoListUpdate={this.handleVideoListUpdate} />
+          <TopMenu
+            handleVideoListUpdate={this.handleVideoListUpdate}
+            handleYuoTubePress={this.handleYuoTubePress}
+          />
           <TopMenuMobile
             handleVideoListUpdate={this.handleVideoListUpdate}
             handleYuoTubePress={this.handleYuoTubePress}

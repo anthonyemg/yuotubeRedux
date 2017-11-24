@@ -47,6 +47,7 @@ class TopMenuMobile extends React.Component {
   handleSearchEnterKeyPress(e) {
     if (e.charCode == 13) {
       this.searchYouTube();
+      this.handleNextPath('/results');
     }
   }
   handleShowSearchBar() {

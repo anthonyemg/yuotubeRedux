@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 
 const propTypes = {
   videos: PropTypes.array,
@@ -10,12 +11,18 @@ const propTypes = {
 class VideoList extends React.Component {
   constructor(props) {
     super();
+    this.handleNextPath = this.handleNextPath.bind(this);
   }
   componentDidMount() {
     document.body.scrollTop = document.documentElement.scrollTop = 0;
   }
   componentWillUpdate() {
     document.body.scrollTop = document.documentElement.scrollTop = 0;
+  }
+  handleNextPath(path) {
+    if (this.props.history.location.pathname !== path) {
+      this.props.history.push(path);
+    }
   }
   render() {
     if (this.props.videos) {
@@ -28,7 +35,10 @@ class VideoList extends React.Component {
             <div
               className="VideoList-video"
               key={idx}
-              onClick={() => this.props.handleSelectVideo(video)}
+              onClick={() => {
+                this.props.handleSelectVideo(video);
+                this.handleNextPath('/player');
+              }}
             >
               <div>
                 <img src={video.snippet.thumbnails.medium.url} />
@@ -58,4 +68,4 @@ class VideoList extends React.Component {
 
 VideoList.propTypes = propTypes;
 
-export default VideoList;
+export default withRouter(VideoList);

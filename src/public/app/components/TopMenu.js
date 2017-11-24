@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
 
 const propTypes = {
-  handleVideoListUpdate: PropTypes.func.isRequired
-  // handleYuoTubePress: PropTypes.func.isRequired
+  handleVideoListUpdate: PropTypes.func.isRequired,
+  handleYuoTubePress: PropTypes.func.isRequired
 };
 
 class TopMenu extends React.Component {
@@ -40,6 +40,7 @@ class TopMenu extends React.Component {
   handleSearchEnterKeyPress(e) {
     if (e.charCode == 13) {
       this.searchYouTube();
+      this.handleNextPath('/results');
     }
   }
   handleNextPath(path) {
@@ -55,7 +56,14 @@ class TopMenu extends React.Component {
             <i className="fa fa-bars fa-lg" />
           </div>
           <i className="fa fa-youtube-play fa-med topMenu-youtubeLogo" />
-          <span onClick={() => this.handleNextPath('/')}>YuoTube</span>
+          <span
+            onClick={() => {
+              this.props.handleYuoTubePress();
+              this.handleNextPath('/');
+            }}
+          >
+            YuoTube
+          </span>
         </div>
 
         <div className="topMenu-searchBar">
