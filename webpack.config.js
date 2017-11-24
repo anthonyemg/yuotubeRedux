@@ -4,7 +4,7 @@ module.exports = {
   entry: `${__dirname}/src/public/app/index.js`,
   output: {
     path: `${__dirname}/src/public/dist`,
-    filename: 'bundle.js',
+    filename: 'bundle.js'
   },
   module: {
     loaders: [
@@ -13,9 +13,9 @@ module.exports = {
         exclude: /(node_modules)/,
         loader: 'babel-loader',
         query: {
-          presets: ['react', 'es2015'],
-        },
+          presets: ['react', 'es2015']
+        }
       }
-    ],
-  },
+    ]
+  }
 };
