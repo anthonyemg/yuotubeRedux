@@ -1,4 +1,6 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import {} from '../actions';
 
 import TopMenu from './TopMenu';
 import TopMenuMobile from './TopMenuMobile';
@@ -21,8 +23,8 @@ class App extends React.Component {
       trendingVideos: null,
       popularMusicVideos: null,
       movieTrailers: null,
-      lateNight: null,
-    }
+      lateNight: null
+    };
     this.handleVideoListUpdate = this.handleVideoListUpdate.bind(this);
     this.numberWithCommas = this.numberWithCommas.bind(this);
     this.handleSelectVideo = this.handleSelectVideo.bind(this);
@@ -44,22 +46,21 @@ class App extends React.Component {
   }
   componentDidMount() {
     this.setState({
-      landingVideoList: true,
-    })
+      landingVideoList: true
+    });
   }
   handleVideoListUpdate(data) {
     this.setState({
       videos: data.items,
       resultsNumber: this.numberWithCommas(data.pageInfo.totalResults),
       selectedVideo: null,
-      selectedVideoComments: null,
-    })
+      selectedVideoComments: null
+    });
   }
   numberWithCommas(x) {
     x = x.toString();
     var pattern = /(-?\d+)(\d{3})/;
-    while (pattern.test(x))
-        x = x.replace(pattern, "$1,$2");
+    while (pattern.test(x)) x = x.replace(pattern, '$1,$2');
     return x;
   }
   handleSelectVideo(video) {
@@ -73,84 +74,84 @@ class App extends React.Component {
     }
     this.setState({
       selectedVideo: video,
-      selectedVideoId: id,
-    })
+      selectedVideoId: id
+    });
     this.handleFetchComments(id);
     this.fetchRelatedVideos(id);
   }
   handleFetchComments(videoId) {
     fetch('/comments', {
       method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({data: videoId}),
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ data: videoId })
     })
-    .then(res => res.json())
-    .then(data => {
-      this.setState({
-        selectedVideoComments: data.items,
+      .then(res => res.json())
+      .then(data => {
+        this.setState({
+          selectedVideoComments: data.items
+        });
       })
-    })
-    .catch(err => console.log(err));
+      .catch(err => console.log(err));
   }
   fetchRelatedVideos(videoId) {
     fetch('/related/videos', {
       method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({data: videoId}),
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ data: videoId })
     })
-    .then(res => res.json())
-    .then(data => {
-      this.handleUpNextVideos(data.items)
-    })
-    .catch(err => console.log(err));
+      .then(res => res.json())
+      .then(data => {
+        this.handleUpNextVideos(data.items);
+      })
+      .catch(err => console.log(err));
   }
   handleUpNextVideos(list) {
     let random = Math.floor(list.length * Math.random());
     let upNextVideo = list.splice(random, 1);
     this.setState({
       upNextVideo: upNextVideo[0],
-      upNextVideoList: list,
-    })
+      upNextVideoList: list
+    });
   }
   fetchTrending() {
     fetch('/trending', {
-      method: 'GET',
+      method: 'GET'
     })
-    .then(res => res.json())
-    .then(data => {
-      this.setState({
-        trendingVideos: data.items,
+      .then(res => res.json())
+      .then(data => {
+        this.setState({
+          trendingVideos: data.items
+        });
       })
-    })
-    .catch(err => console.log(err));
+      .catch(err => console.log(err));
   }
   fetchPopularMusicVideos() {
-    fetch('/popular/musicvideos', {method: 'GET'})
+    fetch('/popular/musicvideos', { method: 'GET' })
       .then(res => res.json())
       .then(data => {
         this.setState({
           popularMusicVideos: data.items
-        })
+        });
       })
       .catch(err => console.log(err));
   }
   fetchMovieTrailers() {
-    fetch('/movie/trailers', {method: 'GET'})
+    fetch('/movie/trailers', { method: 'GET' })
       .then(res => res.json())
       .then(data => {
         this.setState({
           movieTrailers: data.items
-        })
+        });
       })
       .catch(err => console.log(err));
   }
   fetchLateNight() {
-    fetch('/latenight', {method: 'GET'})
+    fetch('/latenight', { method: 'GET' })
       .then(res => res.json())
       .then(data => {
         this.setState({
           lateNight: data.items
-        })
+        });
       })
       .catch(err => console.log(err));
   }
@@ -158,19 +159,19 @@ class App extends React.Component {
     this.setState({
       selectedVideo: null,
       selectedVideoId: null,
-      videos: null,
-    })
+      videos: null
+    });
   }
   convertDate(date) {
     let videoDate = new Date(date);
     let currentDate = new Date();
-    if (currentDate.getFullYear() - videoDate.getFullYear() > 0)  {
+    if (currentDate.getFullYear() - videoDate.getFullYear() > 0) {
       let diff = currentDate.getFullYear() - videoDate.getFullYear();
       return diff > 1 ? diff + ' years ago' : '1 year ago';
     } else if (currentDate.getMonth() - videoDate.getMonth() > 0) {
       let diff = currentDate.getMonth() - videoDate.getMonth();
       return diff > 1 ? diff + ' months ago' : '1 month ago';
-    } else  if (currentDate.getDate() - videoDate.getDate() > 6) {
+    } else if (currentDate.getDate() - videoDate.getDate() > 6) {
       let diff = Math.floor((currentDate.getDate() - videoDate.getDate()) / 7);
       return diff > 1 ? diff + ' weeks ago' : '1 week ago';
     } else if (currentDate.getDate() - videoDate.getDate() > 0) {
@@ -185,7 +186,7 @@ class App extends React.Component {
   }
   render() {
     return (
-      <div className='App'>
+      <div className="App">
         <TopMenu
           handleVideoListUpdate={this.handleVideoListUpdate}
           handleYuoTubePress={this.handleYuoTubePress}
@@ -195,49 +196,57 @@ class App extends React.Component {
           handleYuoTubePress={this.handleYuoTubePress}
           selectedVideo={this.state.selectedVideo}
         />
-        {this.state.trendingVideos && this.state.popularMusicVideos && this.state.movieTrailers && this.state.lateNight && !this.state.videos && !this.state.selectedVideo &&
-          <div className='landingVideoList-wrapper desktopLanding'>
-            <LandingVideoList
+        {this.state.trendingVideos &&
+          this.state.popularMusicVideos &&
+          this.state.movieTrailers &&
+          this.state.lateNight &&
+          !this.state.videos &&
+          !this.state.selectedVideo && (
+            <div className="landingVideoList-wrapper desktopLanding">
+              <LandingVideoList
+                videos={this.state.trendingVideos}
+                title="Trending"
+                handleSelectVideo={this.handleSelectVideo}
+                convertDate={this.convertDate}
+              />
+              <LandingVideoList
+                videos={this.state.popularMusicVideos}
+                title="Popular Music Videos by Music"
+                handleSelectVideo={this.handleSelectVideo}
+                convertDate={this.convertDate}
+              />
+              <LandingVideoList
+                videos={this.state.movieTrailers}
+                title="Trailers by Movies - Topic"
+                handleSelectVideo={this.handleSelectVideo}
+                convertDate={this.convertDate}
+              />
+              <LandingVideoList
+                videos={this.state.lateNight}
+                title="Catch Up on Late Night by Popular on YouTube"
+                handleSelectVideo={this.handleSelectVideo}
+                convertDate={this.convertDate}
+              />
+            </div>
+          )}
+        {this.state.trendingVideos &&
+          !this.state.selectedVideo &&
+          !this.state.videos && (
+            <MobileLanding
               videos={this.state.trendingVideos}
-              title='Trending'
               handleSelectVideo={this.handleSelectVideo}
               convertDate={this.convertDate}
             />
-            <LandingVideoList
-              videos={this.state.popularMusicVideos}
-              title='Popular Music Videos by Music'
+          )}
+        {this.state.videos &&
+          !this.state.selectedVideo && (
+            <VideoList
+              videos={this.state.videos}
+              resultsNumber={this.state.resultsNumber}
               handleSelectVideo={this.handleSelectVideo}
-              convertDate={this.convertDate}
             />
-            <LandingVideoList
-              videos={this.state.movieTrailers}
-              title='Trailers by Movies - Topic'
-              handleSelectVideo={this.handleSelectVideo}
-              convertDate={this.convertDate}
-            />
-            <LandingVideoList
-              videos={this.state.lateNight}
-              title='Catch Up on Late Night by Popular on YouTube'
-              handleSelectVideo={this.handleSelectVideo}
-              convertDate={this.convertDate}
-            />
-          </div>
-        }
-        {this.state.trendingVideos && !this.state.selectedVideo && !this.state.videos &&
-          <MobileLanding
-            videos={this.state.trendingVideos}
-            handleSelectVideo={this.handleSelectVideo}
-            convertDate={this.convertDate}
-          />
-        }
-        {this.state.videos && !this.state.selectedVideo &&
-          <VideoList
-            videos={this.state.videos}
-            resultsNumber={this.state.resultsNumber}
-            handleSelectVideo={this.handleSelectVideo}
-          />
-        }
-        {this.state.selectedVideo &&
+          )}
+        {this.state.selectedVideo && (
           <VideoPlayer
             selectedVideo={this.state.selectedVideo}
             selectedVideoId={this.state.selectedVideoId}
@@ -247,10 +256,15 @@ class App extends React.Component {
             upNextVideoList={this.state.upNextVideoList}
             handleSelectVideo={this.handleSelectVideo}
           />
-        }
+        )}
       </div>
-    )
+    );
   }
 }
 
-export default App;
+const mapStateToProps = state => ({
+  test: state.test
+});
+const mapDispatchToProps = dispatch => ({});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

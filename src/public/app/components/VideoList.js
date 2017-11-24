@@ -1,9 +1,8 @@
 import React from 'react';
 
 class VideoList extends React.Component {
-
   constructor(props) {
-    super(props)
+    super(props);
   }
 
   componentDidMount() {
@@ -15,14 +14,18 @@ class VideoList extends React.Component {
   }
 
   render() {
-    if(this.props.videos) {
+    if (this.props.videos) {
       return (
-        <div className='VideoList'>
-          <div className='VideoList-top'>
+        <div className="VideoList">
+          <div className="VideoList-top">
             <span>About {this.props.resultsNumber} results</span>
           </div>
-          {this.props.videos.map((video, idx) =>  (
-            <div className='VideoList-video' key={idx} onClick={() => this.props.handleSelectVideo(video)}>
+          {this.props.videos.map((video, idx) => (
+            <div
+              className="VideoList-video"
+              key={idx}
+              onClick={() => this.props.handleSelectVideo(video)}
+            >
               <div>
                 {/* <div
                   className='VideoList-videoImage'
@@ -30,34 +33,29 @@ class VideoList extends React.Component {
                 </div> */}
                 <img src={video.snippet.thumbnails.medium.url} />
               </div>
-              <div className='VideoList-videoDescription'>
-
-                <div className='VideoList-videoDescriptionTitle'>
+              <div className="VideoList-videoDescription">
+                <div className="VideoList-videoDescriptionTitle">
                   <span>{video.snippet.title}</span>
                 </div>
 
-                <div className='VideoList-videoDescriptionChannelTitle'>
+                <div className="VideoList-videoDescriptionChannelTitle">
                   <span>{video.snippet.channelTitle}</span>
-                  <span className='desktop'>•</span>
-                  <span className='desktop'>{video.snippet.publishedAt}</span>
+                  <span className="desktop">•</span>
+                  <span className="desktop">{video.snippet.publishedAt}</span>
                 </div>
 
-                <span className='VideoList-videoDescriptionDescription'>
+                <span className="VideoList-videoDescriptionDescription">
                   {video.snippet.description}
                 </span>
-
               </div>
             </div>
           ))}
         </div>
-      )
+      );
     } else {
-      return (
-        <div></div>
-      )
+      return <div />;
     }
   }
-
 }
 
 export default VideoList;
